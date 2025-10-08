@@ -216,7 +216,8 @@
                         <input type="text" placeholder="Name" class="contact__input">
                         <input type="mail" placeholder="Email" class="contact__input">
                         <textarea name="" id="" cols="0" rows="10" class="contact__input"></textarea>
-                        <input type="button" value="Send" class="contact__button button">
+                       <!--<input type="button" value="Send" class="contact__button button">-->
+                        <button type="submit" class="contact__button button">Send</button>
                     </form>
                 </div>
             </section>
@@ -236,6 +237,46 @@
 
         <!--===== SCROLL REVEAL =====-->
         <script src="https://unpkg.com/scrollreveal"></script>
+        <!-- ===== EMAILJS Integration ===== -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+    (function() {
+        emailjs.init("noLzR7_pBSNqiydWp"); // Your Public Key
+    })();
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector(".contact__form");
+
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const name = form.querySelector('input[placeholder="Name"]').value;
+            const email = form.querySelector('input[placeholder="Email"]').value;
+            const message = form.querySelector('textarea').value;
+
+            if (!name || !email || !message) {
+                alert("Please fill out all fields before sending.");
+                return;
+            }
+
+            const templateParams = {
+                from_name: name,
+                from_email: email,
+                message: message,
+            };
+
+            emailjs.send("service_xd9d39l", "template_z3cpd0u", templateParams)
+                .then(() => {
+                    alert("✅ Message sent successfully!");
+                    form.reset();
+                }, (error) => {
+                    console.error("EmailJS Error:", error);
+                    alert("❌ Failed to send message. Please try again later.");
+                });
+        });
+    });
+</script>
+
 
         <!--===== MAIN JS =====-->
         <script src="assets/js/main.js"></script>
